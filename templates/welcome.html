@@ -1,0 +1,71 @@
+<!-- Khai báo loại tài liệu HTML5 -->
+<!DOCTYPE html>
+<!-- Thẻ HTML với thuộc tính ngôn ngữ là tiếng Việt -->
+<html lang="vi">
+<head>
+    <!-- Thiết lập mã hóa ký tự UTF-8 để hỗ trợ tiếng Việt -->
+    <meta charset="UTF-8">
+    <!-- Thiết lập viewport để giao diện responsive trên các thiết bị -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tiêu đề trang hiển thị trên tab trình duyệt -->
+    <title>Chào mừng</title>
+    <!-- Phần CSS nội tuyến để định dạng giao diện -->
+    <style>
+        /* Định dạng toàn bộ body: sử dụng font Arial, căn giữa nội dung, chiều cao toàn màn hình */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e6f3ff; /* Màu nền xanh nhạt */
+        }
+        /* Định dạng container chứa nội dung: căn giữa, nền trắng, padding, viền tròn, bóng đổ */
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        /* Định dạng tiêu đề h1: màu xanh lá */
+        h1 {
+            color: #4CAF50;
+        }
+        /* Định dạng đoạn văn p: kích thước chữ 18px, màu xám đậm */
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+        /* Định dạng nút quay lại: margin trên, padding, kích thước chữ, màu nền xanh dương, viền tròn */
+        .back-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196F3; /* Màu xanh dương */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer; /* Con trỏ chuột khi hover */
+            text-decoration: none; /* Bỏ gạch chân cho liên kết */
+            display: inline-block; /* Hiển thị như khối nội dòng */
+        }
+        /* Hiệu ứng hover cho nút quay lại: đổi màu nền sang xanh dương đậm hơn */
+        .back-btn:hover {
+            background-color: #1e87db;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container chính chứa nội dung giao diện -->
+    <div class="container">
+        <!-- Tiêu đề cấp 1 hiển thị thông báo đăng nhập thành công -->
+        <h1>Đăng nhập thành công!</h1>
+        <!-- Đoạn văn hiển thị lời chào với tên người dùng, {{ name }} được thay bằng giá trị từ Flask -->
+        <p>Chào mừng, {{ name }}!</p>
+        <!-- Liên kết quay lại trang đăng nhập, sử dụng url_for('index') để tạo URL động -->
+        <a href="{{ url_for('index') }}" class="back-btn">Quay lại trang đăng nhập</a>
+    </div>
+</body>
+</html>

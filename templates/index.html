@@ -1,0 +1,141 @@
+<!-- Khai báo loại tài liệu HTML5 -->
+<!DOCTYPE html>
+<!-- Thẻ HTML với thuộc tính ngôn ngữ là tiếng Việt -->
+<html lang="vi">
+<head>
+    <!-- Thiết lập mã hóa ký tự UTF-8 để hỗ trợ tiếng Việt -->
+    <meta charset="UTF-8">
+    <!-- Thiết lập viewport để giao diện responsive trên các thiết bị -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tiêu đề trang hiển thị trên tab trình duyệt -->
+    <title>Đăng nhập bằng khuôn mặt</title>
+    <!-- Phần CSS nội tuyến để định dạng giao diện -->
+    <style>
+        /* Định dạng toàn bộ body: sử dụng font Arial, căn giữa nội dung, chiều cao toàn màn hình */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* Màu nền xám nhạt */
+        }
+        /* Định dạng container chứa nội dung: căn giữa, nền trắng, viền tròn, bóng đổ */
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        /* Định dạng thẻ img hiển thị video: có viền đen, viền tròn */
+        #video {
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+        /* Định dạng nút đăng nhập: margin trên, padding, kích thước chữ, màu nền xanh, viền tròn */
+        #login-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Màu xanh lá */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer; /* Con trỏ chuột khi hover */
+        }
+        /* Hiệu ứng hover cho nút đăng nhập: đổi màu nền sang xanh đậm hơn */
+        #login-btn:hover {
+            background-color: #45a049;
+        }
+        /* Định dạng div hiển thị thông báo: margin trên, kích thước chữ, màu chữ xám */
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container chính chứa toàn bộ nội dung giao diện -->
+    <div class="container">
+        <!-- Tiêu đề cấp 2 hiển thị dòng chữ "Đăng nhập bằng khuôn mặt" -->
+        <h2>Đăng nhập bằng khuôn mặt</h2>
+        <!-- Thẻ img hiển thị luồng video từ webcam, lấy nguồn từ endpoint /video_feed -->
+        <img id="video" src="{{ url_for('video_feed') }}" width="640" height="480" alt="Video feed">
+        <!-- Nút đăng nhập với id="login-btn" để xử lý sự kiện click -->
+        <button id="login-btn">Đăng nhập</button>
+        <!-- Div để hiển thị thông báo lỗi hoặc trạng thái, ban đầu rỗng -->
+        <div id="message"></div>
+    </div>
+
+    <!-- Phần JavaScript để xử lý sự kiện và tương tác với server -->
+    <script>
+        // Thêm sự kiện click cho nút đăng nhập
+        document.getElementById('login-btn').addEventListener('click', () => {
+            // Gửi yêu cầu POST đến endpoint /login
+            fetch('/login', { method: 'POST' })
+                // Xử lý phản hồi từ server dưới dạng JSON
+                .then(response => response.json())
+                // Xử lý dữ liệu JSON nhận được
+                .then(data => {
+                    // Lấy tham chiếu đến div hiển thị thông báo
+                    const messageDiv = document.getElementById('message');
+                    // Kiểm tra trạng thái đăng nhập từ phản hồi
+                    if (data.status === 'success') {
+                        // Nếu đăng nhập thành công, chuẩn bị gửi POST đến /welcome
+                        const formData = new FormData(); // Tạo đối tượng FormData để gửi dữ liệu
+                        formData.append('name', data.name); // Thêm tên người dùng từ phản hồi vào FormData
+                        // Gửi yêu cầu POST đến welcome_url (endpoint /welcome)
+                        fetch(data.welcome_url, {
+                            method: 'POST',
+                            body: formData // Gửi FormData chứa tên người dùng
+                        })
+                        // Xử lý phản hồi từ /welcome dưới dạng văn bản (HTML)
+                        .then(response => response.text())
+                        // Hiển thị trang chào mừng
+                        .then(html => {
+                            document.open(); // Mở document để ghi nội dung mới
+                            document.write(html); // Ghi HTML của trang chào mừng
+                            document.close(); // Đóng document
+                        })
+                        // Xử lý lỗi khi gửi POST đến /welcome
+                        .catch(error => {
+                            messageDiv.textContent = 'Lỗi khi tải trang chào mừng: ' + error; // Hiển thị thông báo lỗi
+                            messageDiv.style.color = 'red'; // Đặt màu chữ đỏ
+                            // Xóa thông báo sau 3 giây
+                            setTimeout(() => {
+                                messageDiv.textContent = '';
+                            }, 3000);
+                        });
+                    } else {
+                        // Nếu đăng nhập thất bại, hiển thị thông báo lỗi từ server
+                        messageDiv.textContent = data.message;
+                        messageDiv.style.color = 'red'; // Đặt màu chữ đỏ
+                        // Xóa thông báo sau 3 giây
+                        setTimeout(() => {
+                            messageDiv.textContent = '';
+                        }, 3000);
+                    }
+                })
+                // Xử lý lỗi khi gửi yêu cầu đến /login
+                .catch(error => {
+                    const messageDiv = document.getElementById('message');
+                    messageDiv.textContent = 'Lỗi: ' + error; // Hiển thị thông báo lỗi
+                    messageDiv.style.color = 'red'; // Đặt màu chữ đỏ
+                    // Xóa thông báo sau 3 giây
+                    setTimeout(() => {
+                        messageDiv.textContent = '';
+                    }, 3000);
+                });
+        });
+
+        // Kiểm tra và xử lý lỗi kết nối video feed
+        const video = document.getElementById('video'); // Lấy tham chiếu đến thẻ img video
+        video.onerror = () => {
+            video.src = video.src; // Thử tải lại luồng video nếu xảy ra lỗi
+        };
+    </script>
+</body>
+</html>

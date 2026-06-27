@@ -1,0 +1,12 @@
+# Môi trường ảo của Python
+venv/
+env/
+.venv/
+
+# Thư mục cache của Python
+__pycache__/
+*.pyc
+
+# Các file cấu hình của trình soạn thảo code (nếu dùng VS Code/PyCharm)
+.vscode/
+.idea/
