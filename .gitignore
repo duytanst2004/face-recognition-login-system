@@ -10,3 +10,6 @@ __pycache__/
 # Các file cấu hình của trình soạn thảo code (nếu dùng VS Code/PyCharm)
 .vscode/
 .idea/
+
+image/
+trained_data.pkl
