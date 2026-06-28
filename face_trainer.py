@@ -12,7 +12,7 @@ import face_recognition
 from config import TRAINING_DIR, TRAINED_DATA_FILE
 
 
-# ── Tính hash thư mục training ────────────────────────────────────────────────
+# Tính hash thư mục training
 
 def get_training_dir_hash(training_dir: str = TRAINING_DIR) -> str:
     """SHA-256 của toàn bộ nội dung file trong thư mục training."""
@@ -28,7 +28,7 @@ def get_training_dir_hash(training_dir: str = TRAINING_DIR) -> str:
     return hasher.hexdigest()
 
 
-# ── Huấn luyện từ ảnh ─────────────────────────────────────────────────────────
+# Huấn luyện từ ảnh
 
 def load_training_data(training_dir: str = TRAINING_DIR):
     """
@@ -59,7 +59,7 @@ def load_training_data(training_dir: str = TRAINING_DIR):
     return encodings, names
 
 
-# ── Lưu / tải cache ───────────────────────────────────────────────────────────
+# Lưu / tải cache
 
 def save_trained_data(encodings, names, dir_hash: str) -> None:
     try:
@@ -81,7 +81,7 @@ def load_trained_data():
         return None
 
 
-# ── Khởi tạo tổng hợp ─────────────────────────────────────────────────────────
+# Khởi tạo tổng hợp
 
 def initialize_training_data() -> tuple[list, list]:
     """

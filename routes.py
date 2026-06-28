@@ -27,7 +27,7 @@ def init_known_data(encodings, names) -> None:
     known_names     = names
 
 
-# ── Route handlers ────────────────────────────────────────────────────────────
+# Route handlers
 
 def index():
     return render_template("index.html")
@@ -90,7 +90,7 @@ def login():
         return jsonify({"status": "error", "message": str(e)})
 
 
-# ── Đăng ký route vào app ─────────────────────────────────────────────────────
+# Đăng ký route vào app
 
 def register_routes(app: Flask) -> None:
     app.add_url_rule("/",           "index",      index)
